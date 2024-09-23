@@ -1,5 +1,6 @@
 ﻿# librarie-test
 
+## Code à faire
   - Utilisateurs :
     - CRUD User
 
@@ -17,3 +18,7 @@
   
   - Paiement: 
     - Payer un panier
+
+# Init : 
+  `npm init -y`
+  `npm install express`
