@@ -1,14 +1,14 @@
-const librairieModel = require('../models/librairieModel');
+const bookModel = require('../models/bookModel');
 
 // Créer un nouveau livre
 exports.createBook = (req, res) => {
-	const { titre, auteur, edition, prix, description, date_publication } = req.body;
+	const { title, author, edition, price, description, date_publication } = req.body;
 
-	if (!titre || !auteur || !prix) {
-		return res.status(400).json({ error: "Les champs 'titre', 'auteur' et 'prix' sont obligatoires" });
+	if (!title || !author || !price) {
+		return res.status(400).json({ error: "Les champs 'title', 'author' et 'price' sont obligatoires" });
 	}
 
-	librairieModel.createBook({ titre, auteur, edition, prix, description, date_publication }, (err, book) => {
+	bookModel.createBook({ title, author, edition, price, description, date_publication }, (err, book) => {
 		if (err) {
 			return res.status(500).json({ error: err.message });
 		}
@@ -18,7 +18,7 @@ exports.createBook = (req, res) => {
 
 // Obtenir tous les livres
 exports.getAllBooks = (req, res) => {
-	librairieModel.getAllBooks((err, books) => {
+	bookModel.getAllBooks((err, books) => {
 		if (err) {
 			return res.status(500).json({ error: err.message });
 		}
@@ -30,7 +30,7 @@ exports.getAllBooks = (req, res) => {
 exports.getBookById = (req, res) => {
 	const { id } = req.params;
 
-	librairieModel.getBookById(id, (err, book) => {
+	bookModel.getBookById(id, (err, book) => {
 		if (err) {
 			return res.status(500).json({ error: err.message });
 		}
@@ -44,9 +44,9 @@ exports.getBookById = (req, res) => {
 // Mettre à jour un livre par son ID
 exports.updateBook = (req, res) => {
 	const { id } = req.params;
-	const { titre, auteur, edition, prix, description, date_publication } = req.body;
+	const { title, author, edition, price, description, date_publication } = req.body;
 
-	librairieModel.updateBook(id, { titre, auteur, edition, prix, description, date_publication }, (err, book) => {
+	bookModel.updateBook(id, { title, author, edition, price, description, date_publication }, (err, book) => {
 		if (err) {
 			return res.status(500).json({ error: err.message });
 		}
@@ -58,7 +58,7 @@ exports.updateBook = (req, res) => {
 exports.deleteBook = (req, res) => {
 	const { id } = req.params;
 
-	librairieModel.deleteBook(id, (err) => {
+	bookModel.deleteBook(id, (err) => {
 		if (err) {
 			return res.status(500).json({ error: err.message });
 		}

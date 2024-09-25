@@ -1,22 +1,22 @@
 const db = require('../config/db.js');
 
-// Créer la table 'librairie' si elle n'existe pas encore
-db.run(`CREATE TABLE IF NOT EXISTS librairie (
+// Créer la table 'books' si elle n'existe pas encore
+db.run(`CREATE TABLE IF NOT EXISTS books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    titre TEXT NOT NULL,
-    auteur TEXT NOT NULL,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
     edition TEXT,
-    prix REAL NOT NULL,
+    price REAL NOT NULL,
     description TEXT,
     date_publication DATE
 )`);
 
 // Fonction pour créer un livre
 exports.createBook = (book, callback) => {
-	const { titre, auteur, edition, prix, description, date_publication } = book;
+	const { title, author, edition, price, description, date_publication } = book;
 
-	const query = `INSERT INTO librairie (titre, auteur, edition, prix, description, date_publication) VALUES (?, ?, ?, ?, ?, ?)`;
-	db.run(query, [titre, auteur, edition, prix, description, date_publication], function (err) {
+	const query = `INSERT INTO books (title, author, edition, price, description, date_publication) VALUES (?, ?, ?, ?, ?, ?)`;
+	db.run(query, [title, author, edition, price, description, date_publication], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -26,7 +26,7 @@ exports.createBook = (book, callback) => {
 
 // Fonction pour récupérer tous les livres
 exports.getAllBooks = (callback) => {
-	const query = `SELECT * FROM librairie`;
+	const query = `SELECT * FROM books`;
 	db.all(query, [], (err, rows) => {
 		if (err) {
 			return callback(err);
@@ -37,7 +37,7 @@ exports.getAllBooks = (callback) => {
 
 // Fonction pour récupérer un livre par son ID
 exports.getBookById = (id, callback) => {
-	const query = `SELECT * FROM librairie WHERE id = ?`;
+	const query = `SELECT * FROM books WHERE id = ?`;
 	db.get(query, [id], (err, row) => {
 		if (err) {
 			return callback(err);
@@ -48,10 +48,10 @@ exports.getBookById = (id, callback) => {
 
 // Fonction pour mettre à jour un livre par son ID
 exports.updateBook = (id, book, callback) => {
-	const { titre, auteur, edition, prix, description, date_publication } = book;
-	const query = `UPDATE librairie SET titre = ?, auteur = ?, edition = ?, prix = ?, description = ?, date_publication = ? WHERE id = ?`;
+	const { title, author, edition, price, description, date_publication } = book;
+	const query = `UPDATE books SET title = ?, author = ?, edition = ?, price = ?, description = ?, date_publication = ? WHERE id = ?`;
 
-	db.run(query, [titre, auteur, edition, prix, description, date_publication, id], function (err) {
+	db.run(query, [title, author, edition, price, description, date_publication, id], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -61,7 +61,7 @@ exports.updateBook = (id, book, callback) => {
 
 // Fonction pour supprimer un livre par son ID
 exports.deleteBook = (id, callback) => {
-	const query = `DELETE FROM librairie WHERE id = ?`;
+	const query = `DELETE FROM books WHERE id = ?`;
 	db.run(query, [id], function (err) {
 		if (err) {
 			return callback(err);
