@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+
 const User = require('../models/userModel');
 
 // Clé secrète pour signer le token
-const JWT_SECRET = 'secret_key';
+const JWT_SECRET = process.env.TOKEN;
 
 // Fonction pour se connecter et obtenir un token
 exports.login = (req, res) => {
