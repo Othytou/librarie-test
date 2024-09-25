@@ -1,20 +1,22 @@
 const express = require('express');
-const router = express.Router();
 const userController = require('../controllers/userController');
+const { authenticateToken } = require('../middlewares/authMiddleware'); // Importer le middleware
 
-// Route pour récupérer tous les utilisateurs
-router.get('/', userController.getAllUsers);
+const router = express.Router();
 
-// Route pour créer un nouvel utilisateur
+// Route pour créer un utilisateur (sans authentification)
 router.post('/', userController.createUser);
 
-// Route pour récupérer un utilisateur par son ID
-router.get('/:id', userController.getUserById);
+// Route pour récupérer tous les utilisateurs (protégée par le middleware)
+router.get('/', authenticateToken, userController.getAllUsers);
 
-// Route pour mettre à jour un utilisateur par son ID
-router.put('/:id', userController.updateUser);
+// Route pour récupérer un utilisateur par ID (protégée par le middleware)
+router.get('/:id', authenticateToken, userController.getUserById);
 
-// Route pour supprimer un utilisateur par son ID
-router.delete('/:id', userController.deleteUser);
+// Route pour mettre à jour un utilisateur par ID (protégée par le middleware)
+router.put('/:id', authenticateToken, userController.updateUser);
+
+// Route pour supprimer un utilisateur par ID (protégée par le middleware)
+router.delete('/:id', authenticateToken, userController.deleteUser);
 
 module.exports = router;

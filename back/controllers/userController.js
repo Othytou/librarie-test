@@ -11,21 +11,22 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-	console.log(req.body); // Ajoute ce log pour voir ce que contient req.body
-
-	const newUser = {
-		name: req.body.name,
+	const user = {
+		username: req.body.username,
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
 		email: req.body.email,
 		password: req.body.password
 	};
 
-	User.createUser(newUser, (err, user) => {
+	userModel.createUser(user, (err, newUser) => {
 		if (err) {
-			return res.status(500).json({ error: err.message });
+			return res.status(400).json({ error: err.message });
 		}
-		res.status(201).json(user);
+		res.status(201).json(newUser);
 	});
 };
+
 
 // Fonction pour récupérer un utilisateur par ID
 exports.getUserById = (req, res) => {

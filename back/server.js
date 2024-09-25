@@ -1,18 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
+const routes = require('./routes/routes');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware pour traiter les requêtes JSON
+// Middleware pour traiter les requêtes JSON et les formulaires
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Middleware pour traiter les requêtes avec des données encodées dans l'URL (formulaires)
-app.use(express.urlencoded({ extended: true }));
-
-// Utilise les routes utilisateur sous l'URL "/users"
-app.use('/users', userRoutes);
+// Routes
+app.use('/', routes);
 
 // Route de test
 app.get('/', (req, res) => {
