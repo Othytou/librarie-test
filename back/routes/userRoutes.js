@@ -4,11 +4,11 @@ const { authenticateToken } = require('../middlewares/authMiddleware'); // Impor
 
 const router = express.Router();
 
-// Route pour créer un utilisateur (sans authentification)
-router.post('/', userController.createUser);
-
 // Route pour récupérer tous les utilisateurs (protégée par le middleware)
 router.get('/', authenticateToken, userController.getAllUsers);
+
+// Route pour créer un utilisateur (sans authentification)
+router.post('/add', userController.createUser);
 
 // Route pour récupérer un utilisateur par ID (protégée par le middleware)
 router.get('/:id', authenticateToken, userController.getUserById);

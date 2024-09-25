@@ -3,6 +3,7 @@
 ## Code à faire
   - Utilisateurs :
     - CRUD User
+    - Connexion / Inscription
 
   - Librairie : 
     - Ajouter des livres 
@@ -20,4 +21,6 @@
     - Payer un panier
 
 # Init : 
-  `npm init -y`
+  - `npm i`
+  - Rename `.env.sample` to `.env`
+  - Change TOKEN in `.env`
