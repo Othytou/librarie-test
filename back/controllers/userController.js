@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 
 // Fonction pour récupérer tous les utilisateurs
@@ -10,23 +11,44 @@ exports.getAllUsers = (req, res) => {
 	});
 };
 
+
 exports.createUser = (req, res) => {
-	const user = {
-		username: req.body.username,
-		first_name: req.body.first_name,
-		last_name: req.body.last_name,
-		email: req.body.email,
-		password: req.body.password
-	};
+    const { username, first_name, last_name, email, password } = req.body;
 
-	userModel.createUser(user, (err, newUser) => {
-		if (err) {
-			return res.status(400).json({ error: err.message });
-		}
-		res.status(201).json(newUser);
-	});
+    // Vérification si l'utilisateur existe déjà
+    User.getUserByEmail(email, (err, existingUser) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (existingUser) {
+            return res.status(400).json({ error: "Un utilisateur avec cet email existe déjà." });
+        }
+
+        // Hachage du mot de passe
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) {
+                return res.status(500).json({ error: "Erreur lors du hachage du mot de passe." });
+            }
+
+            const newUser = {
+                username,
+                first_name,
+                last_name,
+                email,
+                password: hashedPassword
+            };
+
+            User.createUser(newUser, (err, createdUser) => {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                // Ne pas renvoyer le mot de passe haché
+                const { password, ...userWithoutPassword } = createdUser;
+                res.status(201).json(userWithoutPassword);
+            });
+        });
+    });
 };
-
 
 // Fonction pour récupérer un utilisateur par ID
 exports.getUserById = (req, res) => {

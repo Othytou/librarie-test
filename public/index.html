@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librairie en ligne</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Librairie en ligne</h1>
+        <nav>
+            <ul>
+                <li><a href="#" id="showBooks">Livres</a></li>
+                <li><a href="#" id="showCart">Panier</a></li>
+                <li><a href="#" id="showLogin">Connexion</a></li>
+                <li><a href="#" id="showRegister">Créer un compte</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="content"></main>
+    <div id="forms">
+        <form id="loginForm" style="display:none;">
+            <h2>Connexion</h2>
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+
+        <form id="registerForm" style="display:none;">
+            <h2>Créer un compte</h2>
+            <input type="text" id="registerUsername" placeholder="Nom d'utilisateur" required>
+            <input type="text" id="registerFirstName" placeholder="Prénom" required>
+            <input type="text" id="registerLastName" placeholder="Nom" required>
+            <input type="email" id="registerEmail" placeholder="Email" required>
+            <input type="password" id="registerPassword" placeholder="Mot de passe" required>
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

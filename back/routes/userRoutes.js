@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', authenticateToken, userController.getAllUsers);
 
 // Route pour créer un utilisateur (sans authentification)
-router.post('/add', userController.createUser);
+router.post('/users', userController.createUser);
 
 // Route pour récupérer un utilisateur par ID (protégée par le middleware)
 router.get('/:id', authenticateToken, userController.getUserById);

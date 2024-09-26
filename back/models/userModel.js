@@ -69,16 +69,14 @@ exports.getUserByUsername = (username, callback) => {
 };
 
 exports.getUserByEmail = (email, callback) => {
-	const query = `SELECT * FROM users WHERE email = ?`;
-
-	db.get(query, [email], (err, row) => {
-		if (err) {
-			return callback(err);
-		}
-		callback(null, row); // Retourne l'utilisateur s'il existe, sinon null
-	});
+		const query = 'SELECT * FROM users WHERE email = ?';
+		db.get(query, [email], (err, row) => {
+			if (err) {
+				return callback(err);
+			}
+			callback(null, row);
+		});
 };
-
 
 // Fonction pour mettre à jour un utilisateur par son ID
 exports.updateUser = (id, user, callback) => {
