@@ -3,6 +3,7 @@ const userRoutes = require('./userRoutes');
 const authRoutes = require('./authRoutes');
 const bookRoutes = require('./bookRoutes');
 const orderRoutes = require('./orderRoutes');
+const paymentRoutes = require('./paymentRoutes');
 
 
 const router = express.Router();
@@ -16,6 +17,9 @@ router.use('/auth', authRoutes);
 router.use('/books', bookRoutes);
 // Routes pour les commandes
 router.use('/orders', orderRoutes);
+// Routes pour les paiements
+router.use('/payments/', paymentRoutes);
+
 
 
 module.exports = router;

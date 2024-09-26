@@ -23,6 +23,6 @@
 # Init : 
   - `npm i`
   - Rename `.env.sample` to `.env`
-  - Change TOKEN in `.env`
+  - Change fileds by theirs values in `.env`
   - `node back/config/seed.js`
   - `nodemon express`
