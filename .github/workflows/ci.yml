@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.10.0"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with coverage
+        run: |
+          npm test -- --coverage  # Exécute les tests et génère le coverage
+
+      - name: Show coverage report
+        run: |
+          cat ./coverage/lcov-report/index.html | head -n 100  # Affiche un aperçu du coverage dans les logs
+
+      - name: Build Docker image
+        run: docker build -t my-app .
