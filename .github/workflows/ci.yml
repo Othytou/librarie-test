@@ -29,5 +29,9 @@ jobs:
         run: |
           cat ./coverage/lcov-report/index.html | head -n 100  # Affiche un aperçu du coverage dans les logs
 
+      - name: Upload coverage to Codecov
+        run: |
+        bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
       - name: Build Docker image
         run: docker build -t my-app .
