@@ -19,11 +19,11 @@ exports.createUser = (req, res) => {
 		password: req.body.password
 	};
 
-	userModel.createUser(user, (err, newUser) => {
+	User.createUser(user, (err, newUser) => {
 		if (err) {
 			return res.status(400).json({ error: err.message });
 		}
-		res.status(201).json(newUser);
+		res.status(201).json(`${newUser} has been create`);
 	});
 };
 

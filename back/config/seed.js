@@ -3,15 +3,15 @@ const db = require('./db.js');  // Assurez-vous que le chemin est correct pour a
 // Ajout de 3 utilisateurs
 const addUsers = () => {
 	const users = [
-		{ username: 'user1', email: 'oo1@oo.oo', password: 'pwd' },
-		{ username: 'user2', email: 'oo2@oo.oo', password: 'pwd' },
-		{ username: 'user3', email: 'oo3@oo.oo', password: 'pwd' }
+		{ username: 'user1', email: 'oo1@oo.oo', password: 'pwd', role: 'user' },
+		{ username: 'user2', email: 'oo2@oo.oo', password: 'pwd', role: 'user' },
+		{ username: 'user3', email: 'oo3@oo.oo', password: 'pwd', role: 'admin' }
 	];
 
 	users.forEach(user => {
-		const query = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
+		const query = `INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)`;
 
-		db.run(query, [user.username, user.email, user.password], function (err) {
+		db.query(query, [user.username, user.email, user.password, user.role], function (err) {
 			if (err) {
 				console.error(`Erreur lors de l'insertion de l'utilisateur ${user.username}:`, err.message);
 			} else {
@@ -32,7 +32,7 @@ const addBooks = () => {
 	books.forEach(book => {
 		const query = `INSERT INTO books (title, author, edition, price) VALUES (?, ?, ?, ?)`;
 
-		db.run(query, [book.title, book.author, book.edition, book.price], function (err) {
+		db.query(query, [book.title, book.author, book.edition, book.price], function (err) {
 			if (err) {
 				console.error(`Erreur lors de l'insertion du livre ${book.title}:`, err.message);
 			} else {

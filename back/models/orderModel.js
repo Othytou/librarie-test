@@ -1,34 +1,30 @@
 const db = require('../config/db.js'); // Connexion à la base de données
 
 // Création de la table 'orders' si elle n'existe pas
-db.run(`
-  CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+db.query(`CREATE TABLE IF NOT EXISTS orders (
+    id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT "En Cours",
+    status TEXT NOT NULL DEFAULT 'En Cours',
     total_price REAL NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  )
-`);
+);`);
 
-db.run(`
-	CREATE TABLE IF NOT EXISTS order_books (
-		order_id INTEGER NOT NULL,
-		book_id INTEGER NOT NULL,
-		quantity INTEGER NOT NULL DEFAULT 1,
-		FOREIGN KEY (order_id) REFERENCES orders(id),
-		FOREIGN KEY (book_id) REFERENCES books(id),
-		PRIMARY KEY (order_id, book_id)
-	);	
-`)
+db.query(`CREATE TABLE IF NOT EXISTS order_books (
+    order_id INTEGER NOT NULL,
+    book_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    PRIMARY KEY (order_id, book_id)
+);`);
 
 // Créer une nouvelle commande
 exports.createOrder = (orderData, callback) => {
 	const { user_id, status, total_price } = orderData;
 
 	const query = `INSERT INTO orders (user_id, status, total_price) VALUES (?, ?, ?)`;
-	db.run(query, [user_id, status, total_price], function (err) {
+	db.query(query, [user_id, status, total_price], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -61,7 +57,7 @@ exports.addBooksToOrder = (orderId, books, callback) => {
 // Récupérer toutes les commandes
 exports.getAllOrders = (callback) => {
 	const query = `SELECT * FROM orders`;
-	db.all(query, [], (err, rows) => {
+	db.query(query, [], (err, rows) => {
 		if (err) {
 			return callback(err);
 		}
@@ -83,7 +79,7 @@ exports.getOrderById = (id, callback) => {
 // Mettre à jour l'état d'une commande
 exports.updateOrderStatus = (id, status, callback) => {
 	const query = `UPDATE orders SET status = ? WHERE id = ?`;
-	db.run(query, [status, id], function (err) {
+	db.query(query, [status, id], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -94,7 +90,7 @@ exports.updateOrderStatus = (id, status, callback) => {
 // Supprimer une commande
 exports.deleteOrder = (id, callback) => {
 	const query = `DELETE FROM orders WHERE id = ?`;
-	db.run(query, [id], function (err) {
+	db.query(query, [id], function (err) {
 		if (err) {
 			return callback(err);
 		}

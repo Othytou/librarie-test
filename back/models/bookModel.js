@@ -1,8 +1,8 @@
 const db = require('../config/db.js');
 
 // Créer la table 'books' si elle n'existe pas encore
-db.run(`CREATE TABLE IF NOT EXISTS books (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+db.query(`CREATE TABLE IF NOT EXISTS books (
+   id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     edition TEXT,
@@ -16,7 +16,7 @@ exports.createBook = (book, callback) => {
 	const { title, author, edition, price, description, date_publication } = book;
 
 	const query = `INSERT INTO books (title, author, edition, price, description, date_publication) VALUES (?, ?, ?, ?, ?, ?)`;
-	db.run(query, [title, author, edition, price, description, date_publication], function (err) {
+	db.query(query, [title, author, edition, price, description, date_publication], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -27,11 +27,12 @@ exports.createBook = (book, callback) => {
 // Fonction pour récupérer tous les livres
 exports.getAllBooks = (callback) => {
 	const query = `SELECT * FROM books`;
-	db.all(query, [], (err, rows) => {
+
+	db.query(query, (err, result) => {
 		if (err) {
 			return callback(err);
 		}
-		callback(null, rows);
+		callback(null, result.rows);
 	});
 };
 
@@ -51,7 +52,7 @@ exports.updateBook = (id, book, callback) => {
 	const { title, author, edition, price, description, date_publication } = book;
 	const query = `UPDATE books SET title = ?, author = ?, edition = ?, price = ?, description = ?, date_publication = ? WHERE id = ?`;
 
-	db.run(query, [title, author, edition, price, description, date_publication, id], function (err) {
+	db.query(query, [title, author, edition, price, description, date_publication, id], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -62,7 +63,7 @@ exports.updateBook = (id, book, callback) => {
 // Fonction pour supprimer un livre par son ID
 exports.deleteBook = (id, callback) => {
 	const query = `DELETE FROM books WHERE id = ?`;
-	db.run(query, [id], function (err) {
+	db.query(query, [id], function (err) {
 		if (err) {
 			return callback(err);
 		}

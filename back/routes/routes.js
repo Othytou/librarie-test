@@ -1,9 +1,12 @@
 const express = require('express');
+const path = require('path');
 const userRoutes = require('./userRoutes');
 const authRoutes = require('./authRoutes');
 const bookRoutes = require('./bookRoutes');
 const orderRoutes = require('./orderRoutes');
 const paymentRoutes = require('./paymentRoutes');
+
+
 
 
 const router = express.Router();
@@ -20,6 +23,11 @@ router.use('/orders', orderRoutes);
 // Routes pour les paiements
 router.use('/payments/', paymentRoutes);
 
+
+// Routes Front
+router.use('/', (req, res) => {
+	res.sendFile(path.join(__dirname, '..', '..', 'front', 'index.html'));
+});
 
 
 module.exports = router;

@@ -2,13 +2,14 @@ const db = require('../config/db.js');
 const bcrypt = require('bcrypt');
 
 // Créer la table 'users' si elle n'existe pas encore
-db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+db.query(`CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
     first_name TEXT,
     last_name TEXT,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'user'
 );`);
 
 // Fonction pour créer un nouvel utilisateur
@@ -22,7 +23,7 @@ exports.createUser = (user, callback) => {
 		}
 
 		const query = `INSERT INTO users (username, email, password, first_name, last_name) VALUES (?, ?, ?, ?, ?)`;
-		db.run(query, [username, email, hash, first_name || null, last_name || null], function (err) {
+		db.query(query, [username, email, hash, first_name || null, last_name || null], function (err) {
 			if (err) {
 				return callback(err);
 			}
@@ -36,7 +37,7 @@ exports.createUser = (user, callback) => {
 exports.getAllUsers = (callback) => {
 	const query = `SELECT * FROM users`;
 
-	db.all(query, [], (err, rows) => {
+	db.query(query, [], (err, rows) => {
 		if (err) {
 			return callback(err);
 		}
@@ -85,7 +86,7 @@ exports.updateUser = (id, user, callback) => {
 	const { username, first_name, last_name, email, password } = user;
 
 	const query = `UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?`;
-	db.run(query, [username, first_name, last_name, email, password, id], function (err) {
+	db.query(query, [username, first_name, last_name, email, password, id], function (err) {
 		if (err) {
 			return callback(err);
 		}
@@ -97,7 +98,7 @@ exports.updateUser = (id, user, callback) => {
 // Fonction pour supprimer un utilisateur par son ID
 exports.deleteUser = (id, callback) => {
 	const query = `DELETE FROM users WHERE id = ?`;
-	db.run(query, [id], function (err) {
+	db.query(query, [id], function (err) {
 		if (err) {
 			return callback(err);
 		}

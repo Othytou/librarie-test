@@ -1,16 +1,22 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-// Génère un chemin absolu vers le fichier de base de données
-const dbPath = path.resolve(__dirname, 'db.sqlite');
-
-// Ouvre une connexion à la base de données SQLite
-const db = new sqlite3.Database(dbPath, (err) => {
-	if (err) {
-		console.error('Erreur lors de la connexion à la base de données SQLite :', err.message);
-	} else {
-		console.log('Connecté à la base de données SQLite.');
-	}
+// Création d'un pool de connexions à la base de données PostgreSQL
+const pool = new Pool({
+	user: process.env.PG_USER,
+	host: process.env.PG_HOST,
+	database: process.env.PG_DATABASE,
+	password: process.env.PG_PASSWORD,
+	port: process.env.PG_PORT || 5432,
 });
 
-module.exports = db;
+// Vérifier la connexion
+pool.connect((err, client, release) => {
+	if (err) {
+		return console.error('Erreur lors de la connexion à PostgreSQL :', err.stack);
+	}
+	console.log('Connecté à PostgreSQL.');
+	release();  // Libérer le client après la connexion
+});
+
+module.exports = pool;
